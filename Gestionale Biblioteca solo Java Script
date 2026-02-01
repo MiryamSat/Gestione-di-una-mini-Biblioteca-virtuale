@@ -1,0 +1,105 @@
+
+    /*
+    Autore: Miryam Saturno
+    Descrizione: Questo script gestisce un piccolo catalogo digitale di libri. La logica ruota attorno alla classe "Libro",
+    che definisce la struttura di ogni volume attraverso titolo, autore, argomento, editore, anno e classificazione Dewey.
+    Il catalogo iniziale viene creato tramite una serie di oggetti Libro predefiniti,mentre il resto dei dati viene recuperato dal localStorage, 
+    così che i libri aggiunti o eliminati rimangano salvati anche dopo la chiusura della pagina.
+*/
+
+
+    // COSTRUTTORE LIBRO
+    class Libro {
+      constructor(titolo, autore, argomento, editore, anno, dewey) {
+        this.titolo = titolo;
+        this.autore = autore;
+        this.argomento = argomento;
+        this.editore = editore;
+        this.anno = anno;
+        this.dewey = dewey;
+      }
+    }
+
+    // Catalogo di base
+    let catalogoBase = [
+      new Libro('Il prezzo della pace. Quando finisce una guerra','Paolo Mieli', 'Storia','Rizzoli','2025','970'),
+      new Libro('Elogio dell ignoranza e dell errore','Gianrico Carofiglio','Saggio','Einaudi','2025','170'),
+      new Libro('Mare aperto. Storia umana del Mediterraneo centrale','Luca Misculin','Storia','IBS','2025','909'),
+      new Libro('L inganno dei confini. Come la geografia governa il mondo','Simone Guida','Geopolitica','IBS','2025','320'),
+      new Libro('Ucraina, Russia e Nato in poche parole','Marco Travaglio','Geopolitica','IBS','2024','320'),
+      new Libro('Russia. Storia di un impero eurasiatico','Aldo Ferrari','Storia','Mondadori','2024','947'),
+      new Libro('La Repubblica sotto processo. Storia giudiziaria della politica italiana 1994–2023',' Goffredo Buccini','Politica','Non specificata','2023','300'),
+      new Libro('Israele e i palestinesi in poche parole','Marco Travaglio','Storia','PaperFirs','2023','956'),
+      new Libro('Quando eravamo i padroni del mondo. Roma: l impero infinito','Aldo Cazzullo','Storia','Harper Collins','2023','937'),
+      new Libro('Fascisti della parola','Vittorio Feltri','Politica','Rizzoli','2023','324'),
+    ];
+
+    // Caricamento catalogo
+    let catalogo = JSON.parse(localStorage.getItem("catalogo")) || catalogoBase;
+
+    // Funzione per mostrare catalogo
+    function mostraCatalogo() {
+      const ul = document.getElementById("catalogo");
+      ul.innerHTML = "";
+      catalogo.forEach((libro, index) => {
+        ul.innerHTML += `
+          <li>
+            ${libro.titolo} - ${libro.autore} (${libro.anno}) [${libro.argomento}] [${libro.editore}] [${libro.dewey}]
+            <button onclick="eliminaLibro(${index})">❌</button>
+          </li>
+        `;
+      });
+    }
+
+    mostraCatalogo();
+
+    // Elimina libro
+    function eliminaLibro(index) {
+      if (confirm("Vuoi davvero eliminare questo libro?")) {
+        catalogo.splice(index, 1);
+        localStorage.setItem("catalogo", JSON.stringify(catalogo));
+        mostraCatalogo();
+      }
+    }
+
+    // Aggiungere un nuovo libro dal form
+    document.getElementById("form-libri").addEventListener("submit", function(event){
+      event.preventDefault();
+
+      const titolo = document.getElementById("titolo").value;
+      const autore = document.getElementById("autore").value;
+      const argomento = document.getElementById("argomento").value;
+      const editore = document.getElementById("editore").value;
+      const anno = document.getElementById("anno").value;
+      const dewey = document.getElementById("dewey").value;
+
+      const nuovoLibro = new Libro(titolo, autore, argomento, editore, anno, dewey);
+      catalogo.push(nuovoLibro);
+
+      localStorage.setItem("catalogo", JSON.stringify(catalogo));
+      mostraCatalogo();
+      this.reset();
+    });
+
+    // Funzione di ricerca per titolo
+    function cercaLibro() {
+      let testoCercato = document.getElementById("ricerca").value;
+      let risultato = document.getElementById("risultatoRicerca");
+
+      let libroTrovato = null;
+
+      for (let i = 0; i < catalogo.length; i++) {
+        if (catalogo[i].titolo === testoCercato) {
+          libroTrovato = catalogo[i];
+        }
+      }
+
+      if (libroTrovato !== null) {
+        risultato.innerText =
+          "Titolo: " + libroTrovato.titolo +
+          " | Autore: " + libroTrovato.autore +
+          " | Codice Dewey: " + libroTrovato.dewey;
+      } else {
+        risultato.innerText = "Testo non trovato nel catalogo";
+      }
+    }
