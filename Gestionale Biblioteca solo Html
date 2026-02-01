@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestionale Biblioteca</title>
+  <link rel="stylesheet" href="databaseBibliotecario.css">
+</head>
+<body>
+<nav>
+ <ul class="menù">
+  <li><a href="#">Login</a></li>
+  <li><a href="">Lingua ▼</a></li>
+ </ul> 
+</nav>  
+
+<div class="under-menù">
+  <h2>Catalogo del servizio bibliotecario online</h2>
+</div>
+
+<div class="title-form">
+  <h1>Gestione Biblioteca Virtuale</h1>
+</div>
+
+  <main>
+    <form id="form-libri">
+      <h2>Aggiungi libro</h2>
+
+      <div>
+        <label for="titolo">Titolo:</label>
+        <input id="titolo" type="text" placeholder="La rabbia e l'Orgoglio" required>
+      </div>
+
+      <div>
+        <label for="autore">Autore:</label>
+        <input id="autore" type="text" placeholder="Oriana Fallaci" required>
+      </div>
+
+      <div>
+        <label for="argomento">Argomento:</label>
+        <input id="argomento" type="text" placeholder="Saggio" required>
+      </div>
+
+      <div>
+        <label for="editore">Editore:</label>
+        <input id="editore" type="text" placeholder="Rizzoli" required>
+      </div>
+
+      <div>
+        <label for="anno">Anno di pubblicazione:</label>
+        <input id="anno" type="number" placeholder="2002" required>
+      </div>
+
+      <div>
+        <label for="dewey">Codice sistema Dewey:</label>
+        <input id="dewey" type="text" placeholder="320" required>
+      </div>
+
+      <div>
+        <button class="btn" type="submit">Aggiungi libro</button>
+        <button type="reset">Elimina</button>
+      </div>
+    </form>
+  </main>
+
+
+  <div>
+    <h2>Cerca per titolo:</h2>
+    <input type="text" id="ricerca" placeholder="es. Il prezzo della pace. Quando finisce una guerra">
+    <button class="btnRicerca" onclick="cercaLibro()">Cerca</button>
+    <p id="risultatoRicerca"></p>
+  </div>
+
+  <div class="catalogo-base">
+    <h2>Catalogo:</h2>
+    <ul id="catalogo"></ul>
+  </div>
+
+  <script src="databaseBibliotecario.js"></script>
+ 
+</body>
+</html>
